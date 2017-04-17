@@ -66,7 +66,7 @@ mergeWeather <- function(nielsenData){
                                                               sep=",",
                                                               select = 1:4)}))
       weather <- weatherData %>% 
-            mutate(WeekEnding = as.Date(date,format = '%m/%d/%Y') + lubridate::days(1), #Friday -> Statuaday
+            mutate(WeekEnding = as.Date(date,format = '%m/%d/%Y') + lubridate::days(1), #Statuaday -> Sunday
                    Year = lubridate::year(WeekEnding),
                    Month = lubridate::month(WeekEnding),
                    Week = lubridate::week(WeekEnding)) %>%
@@ -412,12 +412,9 @@ generateVaraibles <- function(selectedCategory){
       cat('Creating promotion and ACV related variables...\n')
       cleanedCategory <- selectedCategory%>%
             filter(!is.na(Size)) %>% #Remove products without Size characteristics
-            #filter(Attr2 %in% c('SHAMPOO','CONDITIONER') & as.numeric(Size) >= 10|
-            #       !Attr2 %in% c('SHAMPOO','CONDITIONER')) %>% #Remove sample size in Shampoo and Conditioner
             #--Create Price, Price per Size and ACV
             mutate(Price = Dollars / Units,
                    ACV = ifelse(is.na(ACV),0,ACV)) %>%
-            mutate(PricePerSize = Price/as.numeric(Size)) %>%
             
             #--Label Carried Week 
             group_by(Geography,UPC) %>%
@@ -466,17 +463,12 @@ generateVaraibles <- function(selectedCategory){
                    Measure,
                    Brand,
                    Price,
-                   PricePerSize,
                    PACV_FeatWODisp,
                    PACV_DispWOFeat,
                    PACV_FeatAndDisp,
                    PACV_Discount,
                    ACV,
                    ChangeACV,
-                   Consecutive_FeatWODisp,
-                   Consecutive_DispWOFeat,
-                   Consecutive_FeatAndDisp,
-                   Consecutive_Discount,
                    Ms,
                    OutsideMs,
                    CarriedWeek,
