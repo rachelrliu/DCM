@@ -12,3 +12,13 @@ Related Papers:
 - Nevo, Aviv. "A Practitioner's Guide to Estimation of Random‐Coefficients Logit Models of Demand," Journal of Economics & Management Strategy 9.4 (2000): 513-548.[[pdf](https://github.com/rliiu/DCM/blob/master/Ref/A%20Practitioner's%20Guide%20to%20Estimation%20of%20Random%E2%80%90Coefficients%20Logit%20Models%20of%20Demand.pdf)]
 - Stock, J.H., and Yogo, M. 2005. "Testing for Weak Instruments in Linear Iv Regression," Identification and inference for econometric models: Essays in honor of Thomas Rothenberg (For Instruments Variables Testing) [[pdf](https://github.com/rliiu/DCM/blob/master/Ref/Testing%20for%20Weak%20Instruments%20in%20Linear%20Iv%20Regression.pdf)]
 - Hansen, L.P. 1982. "Large Sample Properties of Generalized Method of Moments Estimators," Econometrica: Journal of the Econometric Society, pp. 1029-1054.(For Instruments Variables Testing)[[pdf](https://github.com/rliiu/DCM/blob/master/Ref/Large%20Sample%20Properties%20of%20Generalized%20Method%20of%20Moments%20Estimators.pdf)]
+
+## Modeling Process
+prepare_data_frame.R intergrates data from multiple sources, then segregates and defines competitive market, and format dataframe for multilevel fixed effect estimation.
+
+The data then feed into run_DCM for parameter estimation. If no endogeneity problem arises, the estimated parameters are passed on to calculate_elastisities.R to calculate elasticties for Tableau dashboard building.
+
+
+
+ ## Visualization and Presentation 
+The estiamted price elasticities were visualized by a Tableau dashboard, and a presentation was given to senior management.
