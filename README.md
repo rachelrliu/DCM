@@ -1,4 +1,4 @@
-## Introduction
+## Overview
 This project applied discrete choice model on 2 years of Nielsen scanner data to model customer behavior and estimate customer demand.
 
 ## The Model
