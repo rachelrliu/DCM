@@ -15,6 +15,7 @@ Related Papers:
 
 ## Modeling Process
 [[R code](https://github.com/rliiu/DCM/tree/master/Modeling)]
+
 prepare_data_frame.R intergrates data from multiple sources, then segregates and defines competitive market, and format dataframe for multilevel fixed effect estimation.
 
 The data then feed into run_DCM for parameter estimation. If no endogeneity problem arises, the estimated parameters are passed on to calculate_elastisities.R to calculate elasticties for Tableau dashboard building.
@@ -23,4 +24,5 @@ The data then feed into run_DCM for parameter estimation. If no endogeneity prob
 
  ## Visualization and Presentation 
  [[presentation](https://www.dropbox.com/home/Public?preview=Presentation.pdf)]
+ 
 The estiamted price elasticities were visualized by a Tableau dashboard, and a presentation was given to senior management.
