@@ -14,6 +14,7 @@ Related Papers:
 - Hansen, L.P. 1982. "Large Sample Properties of Generalized Method of Moments Estimators," Econometrica: Journal of the Econometric Society, pp. 1029-1054.(For Instruments Variables Testing)[[pdf](https://github.com/rliiu/DCM/blob/master/Ref/Large%20Sample%20Properties%20of%20Generalized%20Method%20of%20Moments%20Estimators.pdf)]
 
 ## Modeling Process
+[[R code](https://github.com/rliiu/DCM/tree/master/Modeling)]
 prepare_data_frame.R intergrates data from multiple sources, then segregates and defines competitive market, and format dataframe for multilevel fixed effect estimation.
 
 The data then feed into run_DCM for parameter estimation. If no endogeneity problem arises, the estimated parameters are passed on to calculate_elastisities.R to calculate elasticties for Tableau dashboard building.
@@ -21,4 +22,5 @@ The data then feed into run_DCM for parameter estimation. If no endogeneity prob
 
 
  ## Visualization and Presentation 
+ [[presentation](https://www.dropbox.com/home/Public?preview=Presentation.pdf)]
 The estiamted price elasticities were visualized by a Tableau dashboard, and a presentation was given to senior management.
