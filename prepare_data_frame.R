@@ -24,8 +24,10 @@ readNielsenData <- function(){
                                     FUN=function(files){fread(files,
                                                               header=TRUE, sep=",",
                                                               select = c(1:11,14:17,26))}))
+      
       cat('Preprocessing Neilsen data...\n')
       
+      #Reevaluate Attr4
       nielsenData$Attr4 <-  plyr::revalue(nielsenData$Attr4, 
                                           c('PREMIUM SALON'= 'PROFESSIONAL', 
                                             'REG ICE CREAM' = 'ICE CREAM',
@@ -41,11 +43,26 @@ readNielsenData <- function(){
                                             'TOFU_SOY' = 'NON-DAIRY DESSERT-OTHER',
                                             "OTHER NON-DAIRY" = 'NON-DAIRY DESSERT-OTHER'
                                           ))
+      
+      
+      
       nielsenData <- nielsenData %>%
-            mutate(Category = paste(Attr1,Attr2,Attr3,sep = '_')) %>%
+            #Form categories
+            #analyze ice cream category as a whole
+            #subcategories inside Haircare are generated from Attr4 level,
+            #subcategories inside other cateogories are generated from Attr3 level
+            mutate(CategoryAttr3 = paste(Attr1,Attr2,Attr3,sep = '_'),
+                   CategoryAttr4 = paste(Attr1,Attr2,Attr3,Attr4,sep = '_'),
+                   Category = ifelse(Attr1 == 'GEN HAIRCARE',CategoryAttr4,
+                                     ifelse(Attr1 == 'PKGD ICE CREAM',Attr1,CategoryAttr3))) %>%
+            
+            #match private label with retailer
+            transform(Brand = ifelse(Brand == 'PRIVATE LABEL',paste(Geography,Brand),Brand)) %>%
+            
+            #format date
             transform(WeekEnding = as.Date(WeekEnding,format = '%Y-%m-%d'))%>%
             mutate(Year = lubridate::year(WeekEnding),
-                   Month = lubridate::month(WeekEnding),
+                   Month = lubridate::month( WeekEnding),
                    Week = lubridate::week(WeekEnding))
       
       cat("...Success!\n")
@@ -213,7 +230,7 @@ mergeBrandFacebook <- function(nielsenData) {
             rename(BrandFacebook = Facebook_posts_brands)
       
       cat('Merging Brand Facebook Posts...\n')
-      merged = left_join(nielsenData,facebook, by = c('WeekEnding', 'Category','Brand'))
+      merged = left_join(nielsenData,facebook, by = c('WeekEnding', 'CategoryAttr3'='Category','Brand'))
       cat('...Success!\n')
       return(merged)
       
@@ -267,6 +284,8 @@ mergeOtherVariables <- function(nielsenData){
       cat('Reading in Google Finance data...\n')
       setwd('E:/Team Folder/After Midterm/External Data/varied_by_week')
       gfinance <- read.csv('google_finance.csv')
+      
+      cat('Merging Google Finance data...\n')
       merged4 <- left_join(merged3,gfinance,by = c('Year','Week'))
       cat('Success!\n')
       #----
@@ -277,6 +296,7 @@ mergeOtherVariables <- function(nielsenData){
                    Week = week(Date)) %>%
             group_by(Year,Week) %>%
             summarize(DowJones = mean(Close))
+      cat('Merging Dow Jone Index...\n')
       merged5 <- left_join(merged4,dowJone,by = c('Year','Week'))
       cat('...Success!\n')
       
@@ -288,6 +308,7 @@ mergeOtherVariables <- function(nielsenData){
                    Week = week(Date)) %>%
             group_by(Year,Week) %>%
             summarize(USDIndex = mean(Close))
+      cat('Merging US Doolar Index...\n')
       merged6 <- left_join(merged5,usDollar,by = c('Year','Week'))
       cat('...Success!\n')
       
@@ -297,6 +318,7 @@ mergeOtherVariables <- function(nielsenData){
             transform(DATE = as.Date(DATE,format = '%m/%d/%Y'))%>%
             mutate(Year = year(DATE),
                    Week = week(DATE)) 
+      cat('Mering Initial Jobless claim...\n')
       merged7 <- left_join(merged6,jobless,by = c('Year','Week'))
       cat('...Success!\n')
       
@@ -334,15 +356,14 @@ selectCategory <- function(neilsenData){
       
       cat('Preprocessing Neilson data....\n')
       
-      
       categoryList <- unique(neilsenData$Category)
       #In this case, we only focus on 4 categories
       pattern = "^DEODORANT_|^PERSONAL WASH|^GEN HAIRCARE|^PKGD ICE CREAM"
       
-      selectedCategories <- categoryList[grep(pattern,categoryList)]
+      availableCategoryList <- categoryList[grep(pattern,categoryList)]
       
       
-      while(user_input %in% selectedCategories == FALSE){
+      while(user_input %in% availableCategoryList == FALSE){
             cat('Please enter the category you want to analyze from the list below\n')
             cat(availableCategoryList,sep = '\n')
             user_input <- readline('Enter category name here: ')
@@ -412,7 +433,7 @@ generateVaraibles <- function(selectedCategory){
       cat('Creating promotion and ACV related variables...\n')
       cleanedCategory <- selectedCategory%>%
             filter(!is.na(Size)) %>% #Remove products without Size characteristics
-            #--Create Price, Price per Size and ACV
+            #--Create Priceand ACV
             mutate(Price = Dollars / Units,
                    ACV = ifelse(is.na(ACV),0,ACV)) %>%
             
@@ -458,6 +479,9 @@ generateVaraibles <- function(selectedCategory){
                    Geography,
                    UPC,
                    DESCRIPTION,
+                   Attr1,
+                   Attr2,
+                   Attr3,
                    Attr4,
                    Size,
                    Measure,
