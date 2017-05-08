@@ -5,20 +5,21 @@ main <- function(){
       selectedCategory <- selectCategory(dataFile)
       selectedCategory_topUPC <- filterTopUPC(selectedCategory)
       df <- generateVaraibles(selectedCategory_topUPC)
-      cate <- unique(df$Attr1)
-      if(cate == 'PKGD ICE CREAM') dfNested <- icecreamWithinGroupMs(df)
-      if(cate == 'PERSONAL WASH')  dfNested <- pwWithinGroupMs(df)
-      if(cate == 'DEODORANT') dfNested <- deoWithinGroupMs(df)
-      if(cate == 'GEN HAIRCARE') dfNested <- hairWithinGroupMs(df)
       
       
       
       if(nrow(dfNested) >0 &  
-         sum(is.na(dfNested$y)) == 0 &
-         sum(is.infinite(dfNested$y)) == 0 &
-         length(unique(dfNested$Geography)) > 1 &
-         length(unique(dfNested$UPC)) > 1) {
+         sum(is.na(df$y)) == 0 &
+         sum(is.infinite(df$y)) == 0 &
+         length(unique(df$Geography)) > 1 &
+         length(unique(df$UPC)) > 1) {
             
+            cate <- unique(df$Attr1)
+            if(cate == 'PKGD ICE CREAM') dfNested <- icecreamWithinGroupMs(df)
+            if(cate == 'PERSONAL WASH')  dfNested <- pwWithinGroupMs(df)
+            if(cate == 'DEODORANT') dfNested <- deoWithinGroupMs(df)
+            if(cate == 'GEN HAIRCARE') dfNested <- hairWithinGroupMs(df)
+      
             results <- runModel(dfNested)
             if(resultCheck(results)){
                   calculateElasticity(df,results)  
