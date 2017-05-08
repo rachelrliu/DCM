@@ -103,9 +103,9 @@ runModel <- function(dfNested) {
 
 
 resultCheck <- function(results){
-      if(results[1,'Estimate'] >0 & results[2,'Estimate'] >=0 &
-         results[3,'Estimate'] >= 0 & results[4,'Estimate'] >=0&
-         results[5,'Estimate'] >=0 & results[6,'Estimate'] >=0){
+      if(results[1,'Estimate'] >=0 | results[2,'Estimate'] <0 &
+         results[3,'Estimate'] < 0 | results[4,'Estimate'] <0 |
+         results[5,'Estimate'] < | results[6,'Estimate'] < 0){
             cat('Endogeneity problem arises. Please add instrument variables.')
             return(FALSE)
       }
