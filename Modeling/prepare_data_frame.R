@@ -16,7 +16,7 @@ library(stringr)
 ########    (1) Read Nielsen Data Files and Add External Variables      ########
 readNielsenData <- function(){
       "Read seperated Neilsen data files into a single dataframe"
-      setwd("E:/Data/Unilever/Unilever/TABS Analytics Uploads/NielsenDataOnly")
+      setwd("YOUR DIRECTORY")
       cat("Reading in Neilsen Data Files...\n")
       file_list <- list.files()
       nielsenData <- do.call("rbind",
@@ -72,7 +72,7 @@ readNielsenData <- function(){
 
 mergeWeather <- function(nielsenData){
       "Merge weather data into Neilsen data"
-      setwd("E:/Team Folder/After Midterm/External Data/Weather")
+      setwd("YOUR DIRECTORY")
       
       cat('Reading in Weather data...\n')
       file_list <- list.files()
@@ -103,7 +103,7 @@ mergeWeather <- function(nielsenData){
 mergeAds <- function(nielsenData){
       "Merge Ads data to Neilsen data"
       cat('Reading in Ad Image Data...\n')
-      setwd("E:/Team Folder/After Midterm/External Data")
+      setwd("YOUR DIRECTORY")
       ads <- fread("MSBA_AdImageData.csv",header = TRUE)
       
       cat('Filtering matched retailers...\n')
@@ -155,7 +155,7 @@ mergeBrandGoogleTrends <- function(nielsenData){
       "Merge Brand Google Trend data to Neilsen data"
       
       cat('Reading in Brand Google Trends...\n')
-      setwd("E:/Team Folder/After Midterm/External Data/varied_by_week_and_brand/GoogleTrend")
+      setwd("YOUR DIRECTORY")
       file_list <- list.files()
       
       googleTrend <- do.call("rbind",
@@ -200,7 +200,7 @@ mergeBrandGoogleTrends <- function(nielsenData){
 
 mergeRetailerGoogleTrends <- function(nielsenData){
       cat('Reading in Retailer Google Trends...\n')
-      setwd("E:/Team Folder/After Midterm/External Data/varied_by_week_and_retailer")
+      setwd("YOUR DIRECTORY")
       
       googleTrend <- read.csv('RetailerGoogleTrend.csv') %>%
             transform(Retailer = as.character(Retailer),
@@ -219,7 +219,7 @@ mergeRetailerGoogleTrends <- function(nielsenData){
 
 mergeBrandFacebook <- function(nielsenData) {
       cat('Reading in Brand Facebook Posts...\n')
-      setwd("E:/Team Folder/After Midterm/External Data/varied_by_week_and_brand/FacebookPosts")
+      setwd("YOUR DIRECTORY")
       file_list <- list.files()
       
       facebook <- do.call("rbind",
@@ -240,7 +240,7 @@ mergeBrandFacebook <- function(nielsenData) {
 
 mergeRetailerFacebook <- function(nielsenData) {
       cat('Reading in Retailer Facebook Posts...\n')
-      setwd("E:/Team Folder/After Midterm/External Data/varied_by_week_and_retailer")
+      setwd("YOUR DIRECTORY")
       
       facebook <- read.csv('fbPosts_retailers.csv',stringsAsFactors = FALSE) %>%
             transform(WeekEnding = as.Date(WeekEnding,format = '%m/%d/%Y')) %>%
@@ -260,7 +260,7 @@ mergeOtherVariables <- function(nielsenData){
       cat('Reading in Channel data...\n')
       
       #-----
-      setwd("E:/Team Folder/After Midterm/External Data")
+      setwd("YOUR DIRECTORY")
       channel <- read.csv('channel.csv')
       cat('Merging Channel data...\n')
       merged1 <- left_join(nielsenData,channel,by = 'Geography')
