@@ -23,6 +23,5 @@ The data then feed into run_DCM for parameter estimation. If no endogeneity prob
 
 
  ## Visualization and Presentation 
- [[presentation](https://www.dropbox.com/home/Public?preview=Presentation.pdf)]
  
 The estiamted price elasticities were visualized by a Tableau dashboard, and a presentation was given to senior management.
